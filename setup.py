@@ -8,7 +8,7 @@ with open('LICENSE') as f:
 
 setup(
     name='thedoorman',
-    version='0.1.0',
+    version='0.1.1',
     description='Remote Doorman',
     long_description=readme,
     author='Dave Ehrenberger',
