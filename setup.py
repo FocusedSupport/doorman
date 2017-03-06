@@ -8,14 +8,15 @@ with open('LICENSE') as f:
 
 setup(
     name='thedoorman',
-    version='0.1',
+    version='0.1.0',
     description='Remote Doorman',
     long_description=readme,
     author='Dave Ehrenberger',
     author_email='dave.ehrenberger@focusedsupport.com',
     url='https://github.com/FocusedSupport/thedoorman',
     license=license,
-    packages=find_packages(exclude=('tests', 'docs')),
+    packages=['thedoorman'],
+    data_files=[('license', ['LICENSE'])],
     install_requires=[
         'slackbot',
         ]
