@@ -18,6 +18,6 @@ setup(
     packages=['thedoorman'],
     data_files=[('license', ['LICENSE'])],
     install_requires=[
-        'slackbot',
+        'slackbot'
         ]
 )
