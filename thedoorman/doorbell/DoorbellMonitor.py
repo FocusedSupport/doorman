@@ -1,6 +1,6 @@
 import _thread
 import time
-
+import RPi.GPIO as GPIO
 
 class DoorbellMonitor(object):
 
@@ -15,7 +15,12 @@ class DoorbellMonitor(object):
             print("Error starting Doorbell Monitor thread")
 
     def _monitor(self):
+
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
         while True:
-            self._count += 1
-            print(self._count)
-            time.sleep(3)
+            input_state = GPIO.input(17)
+            if input_state == False:
+                print('Button Pressed')
+                time.sleep(0.2)
