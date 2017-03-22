@@ -1,14 +1,14 @@
-import os
-import sys
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "bot")))
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "doorbell")))
+import threading
 
 from slackbot.bot import Bot
-import doorbell.DoorbellMonitor as dm
+
+import components.doorbell.doorbell_monitor as dm
+import components.slack.slack_sender as ss
+
 
 def main():
     startDoorbellMonitor()
+    startSlackSender()
     startBot()
 
 def startBot():
@@ -17,9 +17,14 @@ def startBot():
     bot.run()
 
 def startDoorbellMonitor():
-    monitor = dm.DoorbellMonitor()
+    monitor = threading.Thread(target=dm.DoorbellMonitor)
     print("Starting doorbell monitor")
-    monitor.run()
+    monitor.start()
+
+def startSlackSender():
+    sender = threading.Thread(target=ss.SlackSender)
+    print("Starting Slack sender")
+    sender.start()
 
 if __name__ == "__main__":
     main()

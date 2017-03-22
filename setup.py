@@ -19,6 +19,7 @@ setup(
     data_files=[('license', ['LICENSE'])],
     install_requires=[
         'slackbot',
-        'PyDispatcher'
+        'PyDispatcher',
+        'RPi.GPIO'
         ]
 )
