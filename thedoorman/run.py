@@ -2,7 +2,7 @@ import threading
 
 from slackbot.bot import Bot
 
-import components.doorbell.doorbell_monitor as dm
+import components.devices.doorbell_monitor as dm
 import components.slack.slack_sender as ss
 
 
