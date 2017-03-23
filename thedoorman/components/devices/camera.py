@@ -1,6 +1,7 @@
 import time
-import picamera
 from PIL import Image
+from picamera import PiCamera
+from io import BytesIO
 
 from pydispatch import dispatcher
 from ..dispatcher.signals import Signals
@@ -23,9 +24,13 @@ class Camera(object):
             time.sleep(10)
 
     def _take_picture(self):
-        with picamera.PiCamera() as camera:
-            img = Image()
-            camera.capture(img, format=Camera.IMG_FORMAT)
+        with PiCamera() as camera:
+            stream = BytesIO()
+            camera.start_preview()
+            camera.capture(stream, format=Camera.IMG_FORMAT)
+            # "Rewind" the stream to the beginning so we can read its content
+            stream.seek(0)
+            img = Image.open(stream)
             return img
 
     def _send_message(self, img=None):
