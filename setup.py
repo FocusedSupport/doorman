@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 with open('README.md') as f:
     readme = f.read()
@@ -20,6 +20,8 @@ setup(
     install_requires=[
         'slackbot',
         'PyDispatcher',
-        'RPi.GPIO'
+        'RPi.GPIO',
+        'picamera',
+        'Pillow'
         ]
 )
