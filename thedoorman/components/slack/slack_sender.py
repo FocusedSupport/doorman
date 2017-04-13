@@ -17,7 +17,7 @@ class SlackSender(object):
         dispatcher.connect(self._handle_message, signal=Signals.SLACK_MESSAGE, sender=dispatcher.Any)
         self._run()
 
-    def _post_image_from_file(filename, token, channels, comment):
+    def _post_image_from_file(self, filename, token, channels, comment):
         f = {'file': (filename, open(filename, 'rb'), 'image/png', {'Expires': '0'})}
         response = requests.post(url='https://slack.com/api/files.upload', data=
         {'token': token, 'channels': channels, 'media': f, 'initial_comment': comment},
