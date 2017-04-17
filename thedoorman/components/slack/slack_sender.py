@@ -41,6 +41,7 @@ class SlackSender(object):
         else:
             slack_data = {"username": "doorman", "text": formatted_msg}
 
+            print("Posting slack message at " + time.time())
             response = requests.post(
                 self.webhook_url, data=json.dumps(slack_data),
                 headers={'Content-Type': 'application/json'}
