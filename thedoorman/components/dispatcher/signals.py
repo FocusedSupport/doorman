@@ -6,6 +6,8 @@ class Signals(object):
     PICTURE_REQUEST = "picture_request"
     SLACK_MESSAGE = "slackmessage"
     UNLOCK = "unlock"
+    CLEANUP = "cleanup"
+    EXIT = "exit"
 
 
 class Senders(object):

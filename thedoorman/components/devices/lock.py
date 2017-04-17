@@ -21,6 +21,8 @@ class Lock(object):
 
 
         dispatcher.connect(self._handle_message, signal=Signals.UNLOCK, sender=Senders.SLACKBOT)
+        dispatcher.connect(self._cleanup, signal=Signals.CLEANUP, sender=dispatcher.Any)
+
         self._run()
 
     def _handle_message(self, door=None, duration=None, userid=None):
@@ -38,6 +40,11 @@ class Lock(object):
         self._unlock(button)
         time.sleep(float(duration))
         self._lock(button)
+
+    def _cleanup(self):
+        print("locking up all doors in cleanup")
+        self._lock(self.MAIN_DOOR_RELAY_CHANNEL)
+        self._lock(self.SIDE_DOOR_RELAY_CHANNEL)
 
     def _lock(self, door):
         GPIO.output(door, GPIO.HIGH)

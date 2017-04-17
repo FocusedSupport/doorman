@@ -1,14 +1,18 @@
 import threading
 import sys
 import os
+import signal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "components/slack")))
 
 from slackbot.bot import Bot
+from pydispatch import dispatcher
+from components.dispatcher.signals import Signals, Senders
 
 import components.devices.doorbell_monitor as dm
 import components.devices.camera as cam
 import components.devices.lock as lock
+import components.devices.gpio_cleanup as gpio
 import components.slack.slack_sender as ss
 import components.slack.message_builder as mb
 import components.slack.user_manager as um
@@ -32,7 +36,10 @@ def start_device_processing():
     print("Starting lock control")
     lock_control.start()
 
-
+    gpio_cleanup = threading.Thread(target=gpio.GPIOCleanup)
+    print("Starting GPIO cleanup module")
+    gpio_cleanup.start()
+    
 def start_slack_processing():
     sender = threading.Thread(target=ss.SlackSender)
     print("Starting Slack sender")
@@ -48,6 +55,14 @@ def start_slack_processing():
     user_manager.set_users(bot._client.users)
     bot.run()
 
+def cleanup(signal, frame):
+    print("Caught interrupt...")
+    signal.signal(signal.SIGINT, original_sigint)
+    dispatcher.send(Signals.CLEANUP, sender=Senders.SLACKBOT)
+    dispatcher.send(Signals.EXIT, sender=Senders.SLACKBOT)
+    exit(0)
 
 if __name__ == "__main__":
+    original_sigint = signal.getsignal(signal.SIGINT)
+    signal.signal(signal.SIGINT, cleanup)
     main()
