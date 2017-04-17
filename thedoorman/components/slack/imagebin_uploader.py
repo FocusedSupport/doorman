@@ -27,7 +27,7 @@ class ImagebinUploader(object):
         lines=response.text.split("\n")
         for line in lines:
             if line.startswith( 'url:'):
-                parts=line.split(":")
+                parts=line.split(":",1)
                 return parts[1]
         return ""
 
