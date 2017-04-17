@@ -11,8 +11,11 @@ class MessageBuilder(object):
         dispatcher.connect(self._handle_message, signal=Signals.PICTURE, sender=dispatcher.Any)
         self._run()
 
-    def _handle_message(self, img=None):
-        message = "Doorbell ring [main]"
+    def _handle_message(self, img=None, source=None):
+        if source == "doorbell":
+            message = "Doorbell ring [main]"
+        else:
+            message = source
         self._send_message(msg=message, img=img)
 
     def _send_message(self, msg=None, img=None):

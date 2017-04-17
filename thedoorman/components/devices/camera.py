@@ -13,12 +13,16 @@ class Camera(object):
 
     def __init__(self):
         dispatcher.connect(self._handle_doorbell, signal=Signals.DOORBELL, sender=dispatcher.Any)
-        dispatcher.connect(self._handle_doorbell, signal=Signals.PICTURE_REQUEST, sender=dispatcher.Any)
+        dispatcher.connect(self._handle_request, signal=Signals.PICTURE_REQUEST, sender=dispatcher.Any)
         self._run()
 
     def _handle_doorbell(self):
         img = self._take_picture()
-        self._send_message(img=img)
+        self._send_message(img=img, source="doorbell")
+
+    def _handle_request(self, username):
+        img = self._take_picture()
+        self._send_message(img=img, source="Picture request from " + username)
 
     def _run(self):
         while True:
@@ -34,5 +38,5 @@ class Camera(object):
             img = Image.open(stream)
             return img
 
-    def _send_message(self, img=None):
-        dispatcher.send(signal=Signals.PICTURE, sender=self, img=img)
+    def _send_message(self, img=None, source=None):
+        dispatcher.send(signal=Signals.PICTURE, sender=self, img=img, source=source)

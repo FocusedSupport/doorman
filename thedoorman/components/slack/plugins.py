@@ -4,6 +4,7 @@ import re
 
 from pydispatch import dispatcher
 from components.dispatcher.signals import Signals, Senders
+from components.slack.user_manager import UserManager
 
 @respond_to('hi', re.IGNORECASE)
 def hi(message):
@@ -26,5 +27,6 @@ def open_door(message, door, duration):
 
 @respond_to('^picture$', re.IGNORECASE)
 def request_picture(message):
-    message.reply("Taking a picture")
-    dispatcher.send(signal=Signals.PICTURE_REQUEST, sender=Senders.SLACKBOT)
+    username = UserManager().get_username(message._get_user_id())
+    message.reply("Taking a picture for " + username)
+    dispatcher.send(signal=Signals.PICTURE_REQUEST, sender=Senders.SLACKBOT, username=username)
