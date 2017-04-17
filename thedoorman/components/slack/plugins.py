@@ -2,8 +2,8 @@ from slackbot.bot import respond_to
 from slackbot.bot import listen_to
 import re
 
-from ..dispatcher.signals import Signals, Senders
 from pydispatch import dispatcher
+from components.dispatcher.signals import Signals, Senders
 
 @respond_to('hi', re.IGNORECASE)
 def hi(message):
@@ -20,11 +20,11 @@ def open_door(message, door, duration):
         duration = DEFAULT_DURATION
 
     message.reply("opening " + door + " for " + duration + " seconds")
-    dispatcher.send(signal=Signals.DOORBELL, sender=Senders.SENDER, door=door, duration=duration, userid=message._get_user_id())
+    dispatcher.send(signal=Signals.DOORBELL, sender=Senders.SLACKBOT, door=door, duration=duration, userid=message._get_user_id())
 
 
 
 @respond_to('^picture$', re.IGNORECASE)
 def request_picture(message):
     message.reply("Taking a picture")
-    dispatcher.send(signal=Signals.PICTURE_REQUEST, sender=Senders.SENDER)
+    dispatcher.send(signal=Signals.PICTURE_REQUEST, sender=Senders.SLACKBOT)
