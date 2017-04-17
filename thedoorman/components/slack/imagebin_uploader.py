@@ -38,7 +38,7 @@ class ImagebinUploader(object):
             message = "Doorbell ring [main]"
         else:
             message = source
-        print("Got image request from " + source + " at time " + time.time())
+        print("Got image request from " + source + " at time  %f" % time.time())
         filename = "/tmp/DoorPicture-" + time.strftime("%Y%m%d-%H%M%S") + ".png"
         img.save(filename)
         self._post_image_from_file(filename=filename, message=message)
