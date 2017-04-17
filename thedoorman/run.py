@@ -14,7 +14,8 @@ import components.devices.camera as cam
 import components.devices.lock as lock
 import components.devices.gpio_cleanup as gpio
 import components.slack.slack_sender as ss
-import components.slack.message_builder as mb
+import components.slack.slack_uploader as slackUpload
+import components.slack.imagebin_uploader as imagebinUpload
 import components.slack.user_manager as um
 
 
@@ -47,13 +48,18 @@ def start_device_processing():
 def start_slack_processing():
     sender = threading.Thread(target=ss.SlackSender)
     sender.daemon = True
-    print("Starting Slack sender")
+    print("Starting Slack Sender")
     sender.start()
 
-    msg_builder = threading.Thread(target=mb.MessageBuilder)
-    msg_builder.daemon = True
-    print("Starting Slack message builder")
-    msg_builder.start()
+    #slack_uploader = threading.Thread(target=slackUpload.SlackUploader)
+    #slack_uploader.daemon = True
+    #print("Starting Slack file uploader")
+    #slack_uploader.start()
+
+    imagebinUploader = threading.Thread(target=imagebinUpload.ImagebinUploader)
+    imagebinUploader.daemon = True
+    print("Starting Imagebin Uploader")
+    imagebinUploader.start()
 
     bot = Bot()
     print("Starting Slack bot")
