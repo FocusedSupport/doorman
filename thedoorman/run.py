@@ -25,27 +25,33 @@ def main():
 
 def start_device_processing():
     monitor = threading.Thread(target=dm.DoorbellMonitor)
+    monitor.daemon = True
     print("Starting doorbell monitor")
     monitor.start()
 
     camera = threading.Thread(target=cam.Camera)
+    camera.daemon = True
     print("Starting camera")
     camera.start()
 
     lock_control = threading.Thread(target=lock.Lock)
+    lock_control.daemon = True
     print("Starting lock control")
     lock_control.start()
 
     gpio_cleanup = threading.Thread(target=gpio.GPIOCleanup)
+    gpio_cleanup.daemon = True
     print("Starting GPIO cleanup module")
     gpio_cleanup.start()
 
 def start_slack_processing():
     sender = threading.Thread(target=ss.SlackSender)
+    sender.daemon = True
     print("Starting Slack sender")
     sender.start()
 
     msg_builder = threading.Thread(target=mb.MessageBuilder)
+    msg_builder.daemon = True
     print("Starting Slack message builder")
     msg_builder.start()
 
