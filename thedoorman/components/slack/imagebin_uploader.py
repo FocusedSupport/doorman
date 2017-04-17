@@ -13,14 +13,14 @@ class ImagebinUploader(object):
         dispatcher.connect(self._handle_message, signal=Signals.PICTURE, sender=dispatcher.Any)
         self._run()
 
-    def _post_image_from_file(self, filename):
+    def _post_image_from_file(self, filename, message):
         files = {'file': (filename, open(filename, 'rb'), 'image/png')}
         response = requests.post(url='https://imagebin.ca/upload.php', files=files)
         url = self._getURL(response)
         if ( url == "" ):
-            message = "unable to upload image!"
+            message += ": unable to upload image!"
         else:
-            message = url
+            message += ": " + url
         self._send_message(msg=message)
 
     def _getURL(self, response):
@@ -31,12 +31,16 @@ class ImagebinUploader(object):
                 return parts[1]
         return ""
 
-    def _handle_message(self, img=None):
+    def _handle_message(self, img=None, source=None):
         if img == None:
             return
+        if source == "doorbell":
+            message = "Doorbell ring [main]"
+        else:
+            message = source
         filename = "/tmp/DoorPicture-" + time.strftime("%Y%m%d-%H%M%S") + ".png"
         img.save(filename)
-        self._post_image_from_file(filename=filename)
+        self._post_image_from_file(filename=filename, message=message)
         os.remove(filename)
 
     def _send_message(self, msg=None, img=None):
