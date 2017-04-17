@@ -34,19 +34,19 @@ class SlackSender(object):
     def _handle_message(self, msg=None, img=None):
         formatted_time = time.strftime('%l:%M%p %Z on %b %d, %Y')
         formatted_msg = ":door: [" + formatted_time + "]: " + msg
-        slack_data = {"username": "doorman", "text": formatted_msg}
-
-        response = requests.post(
-            self.webhook_url, data=json.dumps(slack_data),
-            headers={'Content-Type': 'application/json'}
-        )
-        if response.status_code != 200:
-            print("Error posting to slack")
 
         if img is not None:
             # upload/post?
             self._post_image(img=img, msg=formatted_msg )
-            pass
+        else:
+            slack_data = {"username": "doorman", "text": formatted_msg}
+
+            response = requests.post(
+                self.webhook_url, data=json.dumps(slack_data),
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.status_code != 200:
+                print("Error posting to slack")
 
     def _run(self):
         while True:

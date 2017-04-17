@@ -13,6 +13,7 @@ class Camera(object):
 
     def __init__(self):
         dispatcher.connect(self._handle_doorbell, signal=Signals.DOORBELL, sender=dispatcher.Any)
+        dispatcher.connect(self._handle_doorbell, signal=Signals.PICTURE_REQUEST, sender=dispatcher.Any)
         self._run()
 
     def _handle_doorbell(self):
