@@ -39,7 +39,7 @@ def start_device_processing():
     gpio_cleanup = threading.Thread(target=gpio.GPIOCleanup)
     print("Starting GPIO cleanup module")
     gpio_cleanup.start()
-    
+
 def start_slack_processing():
     sender = threading.Thread(target=ss.SlackSender)
     print("Starting Slack sender")
@@ -55,14 +55,14 @@ def start_slack_processing():
     user_manager.set_users(bot._client.users)
     bot.run()
 
-def cleanup(signal, frame):
+def cleanup():
     print("Caught interrupt...")
-    signal.signal(signal.SIGINT, original_sigint)
     dispatcher.send(Signals.CLEANUP, sender=Senders.SLACKBOT)
     dispatcher.send(Signals.EXIT, sender=Senders.SLACKBOT)
     exit(0)
 
 if __name__ == "__main__":
-    original_sigint = signal.getsignal(signal.SIGINT)
-    signal.signal(signal.SIGINT, cleanup)
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        cleanup()
