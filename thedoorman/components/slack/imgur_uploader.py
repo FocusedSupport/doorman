@@ -5,7 +5,7 @@ from imgurpython import ImgurClient
 from pydispatch import dispatcher
 
 from ..dispatcher.signals import Signals
-
+from slackbot import settings
 
 
 #image='DoorPicture-20170417-090258.png'
@@ -18,8 +18,8 @@ from ..dispatcher.signals import Signals
 class ImgurUploader(object):
 
     def __init__(self):
-        self.client_id = '44c6da535071382'
-        self.client_secret = 'eb1efc9b5f904ecc64ee8675a92e922777a86470'
+        self.client_id = settings.IMGUR_ID
+        self.client_secret = settings.IMGUR_SECRET
         self.client = ImgurClient(self.client_id, self.client_secret)
 
         dispatcher.connect(self._handle_message, signal=Signals.PICTURE, sender=dispatcher.Any)
