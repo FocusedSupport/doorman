@@ -1,6 +1,7 @@
 from slackbot.bot import respond_to
 from slackbot.bot import listen_to
 import re
+import time
 
 from pydispatch import dispatcher
 from components.dispatcher.signals import Signals, Senders
@@ -29,4 +30,5 @@ def open_door(message, door, duration):
 def request_picture(message):
     username = UserManager().get_username(message._get_user_id())
     message.reply("Taking a picture for " + username)
+    print("Got slackbot picture command from " + username + " at time  %f" % time.time())
     dispatcher.send(signal=Signals.PICTURE_REQUEST, sender=Senders.SLACKBOT, username=username)

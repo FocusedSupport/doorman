@@ -21,6 +21,7 @@ class ImagebinUploader(object):
             message += ": unable to upload image!"
         else:
             message += ": " + url
+        print("Uploaded image to URL " + url + " at time  %f" % time.time())
         self._send_message(msg=message)
 
     def _getURL(self, response):
@@ -38,9 +39,11 @@ class ImagebinUploader(object):
             message = "Doorbell ring [main]"
         else:
             message = source
-        print("Got image request from " + source + " at time  %f" % time.time())
+        print("Got image from " + source + " at time  %f" % time.time())
         filename = "/tmp/DoorPicture-" + time.strftime("%Y%m%d-%H%M%S") + ".png"
         img.save(filename)
+        print("Saved image to file " + filename +" at time  %f" % time.time())
+
         self._post_image_from_file(filename=filename, message=message)
         os.remove(filename)
 

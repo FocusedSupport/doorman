@@ -31,11 +31,12 @@ class Camera(object):
     def _take_picture(self):
         with PiCamera() as camera:
             stream = BytesIO()
-            camera.start_preview()
+            #camera.start_preview()
             camera.capture(stream, format=Camera.IMG_FORMAT)
             # "Rewind" the stream to the beginning so we can read its content
             stream.seek(0)
             img = Image.open(stream)
+            print("Took image at time %f" % time.time())
             return img
 
     def _send_message(self, img=None, source=None):
