@@ -16,6 +16,8 @@ import components.devices.gpio_cleanup as gpio
 import components.slack.slack_sender as ss
 import components.slack.slack_uploader as slackUpload
 import components.slack.imagebin_uploader as imagebinUpload
+import components.slack.imgur_uploader as imgurUpload
+
 import components.slack.user_manager as um
 
 
@@ -56,10 +58,15 @@ def start_slack_processing():
     #print("Starting Slack file uploader")
     #slack_uploader.start()
 
-    imagebinUploader = threading.Thread(target=imagebinUpload.ImagebinUploader)
-    imagebinUploader.daemon = True
-    print("Starting Imagebin Uploader")
-    imagebinUploader.start()
+    #imagebinUploader = threading.Thread(target=imagebinUpload.ImagebinUploader)
+    #imagebinUploader.daemon = True
+    #print("Starting Imagebin Uploader")
+    #imagebinUploader.start()
+
+    imgurUploader = threading.Thread(target=imgurUpload.ImgurUploader)
+    imgurUploader.daemon = True
+    print("Starting imgur Uploader")
+    imgurUploader.start()
 
     bot = Bot()
     print("Starting Slack bot")

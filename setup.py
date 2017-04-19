@@ -22,6 +22,7 @@ setup(
         'PyDispatcher',
         'RPi.GPIO',
         'picamera',
-        'Pillow'
+        'Pillow',
+        'imgurpython'
         ]
 )
