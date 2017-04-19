@@ -22,7 +22,7 @@ def open_door(message, door, duration):
         duration = DEFAULT_DURATION
 
     message.reply("opening " + door + " for " + duration + " seconds")
-    dispatcher.send(signal=Signals.DOORBELL, sender=Senders.SLACKBOT, door=door, duration=duration, userid=message._get_user_id())
+    dispatcher.send(signal=Signals.UNLOCK, sender=Senders.SLACKBOT, door=door, duration=duration, userid=message._get_user_id())
 
 
 
