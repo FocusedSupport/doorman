@@ -10,8 +10,7 @@ from ..dispatcher.signals import Signals
 
 class SlackSender(object):
 
-    # this one posts to #doormantest for now
-    webhook_url = 'https://hooks.slack.com/services/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'
+    webhook_url = settings.WEBHOOK_URL
 
     def __init__(self):
         dispatcher.connect(self._handle_message, signal=Signals.SLACK_MESSAGE, sender=dispatcher.Any)
@@ -28,7 +27,7 @@ class SlackSender(object):
         token = settings.API_TOKEN
         filename = "/tmp/DoorPicture-" + time.strftime("%Y%m%d-%H%M%S") + ".png"
         img.save(filename)
-        self._post_image_from_file(filename=filename, token=token, channels='#doormantest', comment=msg)
+        self._post_image_from_file(filename=filename, token=token, channels=settings.IMG_CHANNEL, comment=msg)
         os.remove(filename)
 
     def _handle_message(self, msg=None, img=None):
