@@ -45,9 +45,11 @@ class Lock(object):
         self._lock(Pins.SIDE_DOOR_RELAY_CHANNEL)
 
     def _lock(self, door):
+        dispatcher.send(signal=Signals.LOCKED, sender=Senders.SLACKBOT, door=door)
         GPIO.output(door, GPIO.HIGH)
 
     def _unlock(self, door):
+        dispatcher.send(signal=Signals.UNLOCKED, sender=Senders.SLACKBOT, door=door)
         GPIO.output(door, GPIO.LOW)
 
     def _run(self):
