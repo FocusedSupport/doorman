@@ -23,6 +23,7 @@ setup(
         'RPi.GPIO',
         'picamera',
         'Pillow',
-        'imgurpython'
+        'imgurpython',
+        'netifaces'
         ]
 )
