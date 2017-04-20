@@ -12,8 +12,8 @@ class DoorbellMonitor(object):
     def __init__(self):
         self.lastTime = 0
         self.ignoreTimeSeconds = 5.0
-        dispatcher.connect(self._handle_lockevent, signal=Signals.UNLOCKED, sender=Senders.Any)
-        dispatcher.connect(self._handle_lockevent, signal=Signals.LOCKED, sender=Senders.Any)
+        dispatcher.connect(self._handle_lockevent, signal=Signals.UNLOCKED, sender=dispatcher.Any)
+        dispatcher.connect(self._handle_lockevent, signal=Signals.LOCKED, sender=dispatcher.Any)
         self._run()
 
     def _handle_lockevent(self, door=None):
