@@ -22,10 +22,10 @@ class DoorbellMonitor(object):
 
     def _run(self):
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(Pins.BUTTON_CHANNEL, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.setup(Pins.BUTTON_CHANNEL, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
         while True:
-            GPIO.wait_for_edge(Pins.BUTTON_CHANNEL, GPIO.RISING)
+            GPIO.wait_for_edge(Pins.BUTTON_CHANNEL, GPIO.FALLING)
             currentTime = time.time()
             if currentTime - self.lastTime > self.ignoreTimeSeconds:
                 self.lastTime = currentTime
