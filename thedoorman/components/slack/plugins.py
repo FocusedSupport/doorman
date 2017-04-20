@@ -35,7 +35,7 @@ def request_picture(message):
     dispatcher.send(signal=Signals.PICTURE_REQUEST, sender=Senders.SLACKBOT, username=username)
 
 
-@respond_to('^status$', re.IGNORECASE)
+@respond_to('^how are you?', re.IGNORECASE)
 def status(message):
     message.reply("I'm good, thanks.")
     message.reply("My system uptime is " + uptime() + ".")
