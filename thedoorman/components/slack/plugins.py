@@ -34,6 +34,12 @@ def request_picture(message):
     print("Got slackbot picture command from " + username + " at time  %f" % time.time())
     dispatcher.send(signal=Signals.PICTURE_REQUEST, sender=Senders.SLACKBOT, username=username)
 
+@respond_to('^say\s*(.*)$', re.IGNORECASE)
+def say(message, whatToSay):
+    username = UserManager().get_username(message._get_user_id())
+    print("Got request to say a message from " + username + ": " + whatToSay)
+    message.reply("Will say " + whatToSay)
+    dispatcher.send(signal=Signals.SLACK_MESSAGE, sender=Senders.SLACKBOT, msg=whatToSay, suppressIconAndTime=True)
 
 @respond_to('^how are you?', re.IGNORECASE)
 def status(message):

@@ -30,9 +30,12 @@ class SlackSender(object):
         self._post_image_from_file(filename=filename, token=token, channels=settings.IMG_CHANNEL, comment=msg)
         os.remove(filename)
 
-    def _handle_message(self, msg=None, img=None):
-        formatted_time = time.strftime('%l:%M%p %Z on %b %d, %Y')
-        formatted_msg = ":door: [" + formatted_time + "]: " + msg
+    def _handle_message(self, msg=None, img=None, suppressIconAndTime=None):
+        if suppressIconAndTime is True:
+            formatted_msg = msg
+        else:
+            formatted_time = time.strftime('%l:%M%p %Z on %b %d, %Y')
+            formatted_msg = ":door: [" + formatted_time + "]: " + msg
 
         if img is not None:
             # upload/post?
