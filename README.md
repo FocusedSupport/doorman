@@ -17,3 +17,16 @@ Edit `slackbot_settings.py`:
 
 ## To Run
 `python run.py`
+
+## To Run on boot
+
+1. Edit start-doorman.sh, setting the python3 interpreter and install directory if necessary, and setting any environment variables needed.
+2. Edit doorman.service, adjusting the paths as necessary.
+3. Install doorman.service:
+    % sudo cp doorman.service /lib/systemd/system/
+    % sudo chmod 644 /lib/systemd/system/doorman.service
+    % sudo systemctl daemon-reload
+    % sudo systemctl enable doorman
+4. Reboot
+
+

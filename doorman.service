@@ -1,0 +1,14 @@
+[Unit]
+Description=Doorman bot
+After=multi-user.target
+
+[Service]
+Type=forking
+User=pi
+WorkingDirectory=/home/pi
+ExecStart=/home/pi/thedoorman/start-doorman.sh
+ExecStop=/home/pi/thedoorman/stop-doorman.sh
+
+[Install]
+WantedBy=multi-user.target
+
