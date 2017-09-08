@@ -15,6 +15,7 @@ def hi(message):
 
 DEFAULT_DOOR = 'main'
 DEFAULT_DURATION = '5'
+MAX_DURATION = '300'
 
 @respond_to('^open\s*(main|side|)\s*(\d*)\s*$', re.IGNORECASE)
 def open_door(message, door, duration):
@@ -22,6 +23,13 @@ def open_door(message, door, duration):
         door = DEFAULT_DOOR
     if not duration:
         duration = DEFAULT_DURATION
+
+    if duration < 0:
+        message.reply("Invalid duration " + duration + ", using " + DEFAULT_DURATION)
+        duration = DEFAULT_DURATION
+    if duration > MAX_DURATION:
+        message.reply("Invalid duration " + duration + ", using " + MAX_DURATION)
+        duration = MAX_DURATION
 
     message.reply("opening " + door + " for " + duration + " seconds")
     dispatcher.send(signal=Signals.UNLOCK, sender=Senders.SLACKBOT, door=door, duration=duration, userid=message._get_user_id())
