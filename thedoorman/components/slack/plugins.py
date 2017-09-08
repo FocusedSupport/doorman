@@ -16,7 +16,7 @@ def hi(message):
 DEFAULT_DOOR = 'main'
 DEFAULT_DURATION = '5'
 
-@respond_to('^open\s*(main|side|)\s*(\d*)$', re.IGNORECASE)
+@respond_to('^open\s*(main|side|)\s*(\d*)\s*$', re.IGNORECASE)
 def open_door(message, door, duration):
     if not door:
         door = DEFAULT_DOOR
