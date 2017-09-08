@@ -17,6 +17,18 @@ DEFAULT_DOOR = 'main'
 DEFAULT_DURATION = '5'
 MAX_DURATION = '300'
 
+@respond_to('^\s*help\s*$', re.IGNORECASE)
+def help_me(message):
+    help_str = """this is help for doorman
+
+    I know the following commands:
+
+        open [main|side] [duration]
+        say (message)
+
+        """
+    message.reply('```' + help_str + '```')
+
 @respond_to('^open\s*(main|side|)\s*(\d*)\s*$', re.IGNORECASE)
 def open_door(message, door, duration):
     if not door:
