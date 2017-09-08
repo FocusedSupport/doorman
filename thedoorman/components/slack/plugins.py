@@ -19,14 +19,36 @@ MAX_DURATION = '300'
 
 @respond_to('^\s*help\s*$', re.IGNORECASE)
 def help_me(message):
-    help_str = """this is help for doorman
+    help_str = """I know the following commands:
 
-    I know the following commands:
+    open [main|side] [duration]
+ 
+        Unlocks the appropriate door for [duration] seconds.  Default
+        door is the main door, default time is 5 seconds.  Max time is
+        300 seconds.
 
-        open [main|side] [duration]
-        say (message)
+    picture
 
-        """
+        Take a picture as if the doorbell button was pressed, and post it
+        to the channel.
+
+    say (message)
+
+        Repeats the message on to the channel.
+
+    how are you?
+
+        Replies to the message with status information for the doorman.
+
+    help
+
+        Replies with this help message.
+
+
+    All commands can be sent to the doorman in a private message, or 
+    directed to the doorman in a mention (e.g.  @doorman how are you? in the
+    channel will cause the reply to go to the channel)
+"""
     message.reply('```' + help_str + '```')
 
 @respond_to('^open\s*(main|side|)\s*(\d*)\s*$', re.IGNORECASE)
