@@ -24,10 +24,10 @@ def open_door(message, door, duration):
     if not duration:
         duration = DEFAULT_DURATION
 
-    if duration < 0:
+    if float(duration) < 0:
         message.reply("Invalid duration " + duration + ", using " + DEFAULT_DURATION)
         duration = DEFAULT_DURATION
-    if duration > MAX_DURATION:
+    if float(duration) > float(MAX_DURATION):
         message.reply("Invalid duration " + duration + ", using " + MAX_DURATION)
         duration = MAX_DURATION
 
