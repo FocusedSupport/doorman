@@ -19,7 +19,9 @@ class Lock(object):
         self._lock(Pins.SIDE_DOOR_RELAY_CHANNEL)
 
         dispatcher.connect(self._handle_message, signal=Signals.UNLOCK, sender=Senders.SLACKBOT)
+        dispatcher.connect(self._handle_history_message, signal=Signals.UNLOCK_HISTORY, sender=Senders.SLACKBOT)
         dispatcher.connect(self._cleanup, signal=Signals.CLEANUP, sender=dispatcher.Any)
+        self.history = {}
 
         self._run()
 
@@ -35,9 +37,25 @@ class Lock(object):
             return
 
         print("unlocking " + door + " for " + duration + " seconds, initiated by "+username)
+
+        # store the command in our history map
+        historyEntry = { "door" : door, "duration" : duration }
+        self.history[username] = historyEntry
+
         self._unlock(button)
         time.sleep(float(duration))
         self._lock(button)
+
+    def _handle_history_message(self, message=None):
+
+        username = UserManager().get_username(message._get_user_id())
+
+        if username in self.history:
+            entry = self.history[username]
+            message.reply("found history entry: " + entry + " for user " + username)
+            self._handle_message(door=entry["door"], duration=entry["duration"], userid=message._get_user_id())
+        else:
+            message.reply("unable to find history entry for user " + username)
 
     def _cleanup(self):
         print("locking up all doors in cleanup")

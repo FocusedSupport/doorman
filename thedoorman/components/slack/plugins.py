@@ -68,6 +68,10 @@ def open_door(message, door, duration):
     message.reply("opening " + door + " for " + duration + " seconds")
     dispatcher.send(signal=Signals.UNLOCK, sender=Senders.SLACKBOT, door=door, duration=duration, userid=message._get_user_id())
 
+@respond_to('^\s*r\s*$', re.IGNORECASE)
+def repeat_open(message):
+    message.reply("attempting to repeat previous unlock command")
+    dispatcher.send(signal=Signals.UNLOCKHIST, sender=Senders.SLACKBOT, message=message)
 
 @respond_to('^picture$', re.IGNORECASE)
 def request_picture(message):
