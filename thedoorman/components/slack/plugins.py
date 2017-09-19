@@ -27,6 +27,10 @@ def help_me(message):
         door is the main door, default time is 5 seconds.  Max time is
         300 seconds.
 
+    r
+        Repeats the previous open command for this user.   History is not
+        saved between restarts of the doorman bot.
+
     picture
 
         Take a picture as if the doorbell button was pressed, and post it
@@ -70,7 +74,7 @@ def open_door(message, door, duration):
 
 @respond_to('^\s*r\s*$', re.IGNORECASE)
 def repeat_open(message):
-    message.reply("attempting to repeat previous unlock command")
+    print("attempting to repeat previous unlock command")
     dispatcher.send(signal=Signals.UNLOCK_HISTORY, sender=Senders.SLACKBOT, message=message)
 
 @respond_to('^picture$', re.IGNORECASE)
