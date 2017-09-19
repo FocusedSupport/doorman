@@ -52,7 +52,7 @@ class Lock(object):
 
         if username in self.history:
             entry = self.history[username]
-            message.reply("found history entry: " + entry + " for user " + username)
+            message.reply("found history entry: door=" + entry["door"] + ", duration=" + entry["duration"] +  " for user " + username)
             self._handle_message(door=entry["door"], duration=entry["duration"], userid=message._get_user_id())
         else:
             message.reply("unable to find history entry for user " + username)
