@@ -6,7 +6,7 @@ class Signals(object):
     PICTURE_REQUEST = "picture_request"
     SLACK_MESSAGE = "slackmessage"
     UNLOCK = "unlock"
-    UNLOCKHIST = "unlock_history"
+    UNLOCK_HISTORY = "unlock_history"
     UNLOCKED = "unlocked"
     LOCKED = "locked"
     CLEANUP = "cleanup"
