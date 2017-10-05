@@ -11,6 +11,8 @@ class Signals(object):
     LOCKED = "locked"
     CLEANUP = "cleanup"
     EXIT = "exit"
+    AUDIO_REQUEST = "audio_request"
+    AUDIO_CANCEL = "audio_cancel"
 
 
 class Senders(object):
