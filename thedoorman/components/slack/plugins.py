@@ -40,6 +40,14 @@ def help_me(message):
 
         Repeats the message on to the channel.
 
+    play (MP3 URL)
+
+        Downloads and plays the MP3 audio designated by the provided URL.
+
+    cancel audio
+
+        Stops any currently running audio playback.
+
     how are you?
 
         Replies to the message with status information for the doorman.
@@ -90,6 +98,20 @@ def say(message, whatToSay):
     print("Got request to say a message from " + username + ": " + whatToSay)
     message.reply("Will say " + whatToSay)
     dispatcher.send(signal=Signals.SLACK_MESSAGE, sender=Senders.SLACKBOT, msg=whatToSay, suppressIconAndTime=True)
+
+@respond_to('^play\s*(.*)$', re.IGNORECASE)
+def play(message, audio_file):
+    username = UserManager().get_username(message._get_user_id())
+    print("Got request to play an audio file from " + username + ": " + audio_file)
+    message.reply("Will play " + audio_file)
+    dispatcher.send(signal=Signals.AUDIO_REQUEST, sender=Senders.SLACKBOT, file=audio_file)
+
+@respond_to('^cancel audio.*$', re.IGNORECASE)
+def cancel(message):
+    username = UserManager().get_username(message._get_user_id())
+    print("Got request to cancel audio playback from " + username)
+    message.reply("Will cancel audio playback")
+    dispatcher.send(signal=Signals.AUDIO_CANCEL, sender=Senders.SLACKBOT)
 
 @respond_to('^how are you?', re.IGNORECASE)
 def status(message):

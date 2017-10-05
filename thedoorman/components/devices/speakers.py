@@ -1,6 +1,7 @@
 import os
 import time
 import pygame
+import urllib.request
 
 from pydispatch import dispatcher
 from ..dispatcher.signals import Signals
@@ -10,7 +11,8 @@ class Speakers(object):
 
     def __init__(self):
         dispatcher.connect(self._handle_doorbell, signal=Signals.DOORBELL, sender=dispatcher.Any)
-        #dispatcher.connect(self._handle_request, signal=Signals.SOUND_REQUEST, sender=dispatcher.Any)
+        dispatcher.connect(self._handle_request, signal=Signals.AUDIO_REQUEST, sender=dispatcher.Any)
+        dispatcher.connect(self._cancel_playback, signal=Signals.AUDIO_CANCEL, sender=dispatcher.Any)
        
         pygame.mixer.init()
         self.doorbell_sound = os.environ['DOORBELL_SOUND']
@@ -20,15 +22,23 @@ class Speakers(object):
     def _handle_doorbell(self):
         self._play_sound(self.doorbell_sound)
 
+    def _handle_request(self, file):
+        sound_file = "/tmp/" + os.path.basename(file)
+        urllib.request.urlretrieve(file, sound_file)
+        self._play_sound(sound_file)
+
     def _run(self):
         while True:
             time.sleep(10)
 
+    def _cancel_playback(self):
+        pygame.mixer.music.stop()
+
     def _play_sound(self, sound_file):
         print("Speakers: playing ", sound_file)
+
         pygame.mixer.music.load(sound_file)
         pygame.mixer.music.play()
 
         while pygame.mixer.music.get_busy() == True:
             time.sleep(.25)
-
