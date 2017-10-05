@@ -13,6 +13,7 @@ import components.devices.doorbell_monitor as dm
 import components.devices.camera as cam
 import components.devices.lock as lock
 import components.devices.gpio_cleanup as gpio
+import components.devices.speakers as spkr
 import components.slack.slack_sender as ss
 import components.slack.slack_uploader as slackUpload
 import components.slack.imagebin_uploader as imagebinUpload
@@ -31,6 +32,11 @@ def start_device_processing():
     monitor.daemon = True
     print("Starting doorbell monitor")
     monitor.start()
+
+    audio = threading.Thread(target=spkr.Speakers)
+    audio.daemon = True
+    print("Starting audio")
+    audio.start()
 
     camera = threading.Thread(target=cam.Camera)
     camera.daemon = True
