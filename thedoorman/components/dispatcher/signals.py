@@ -5,6 +5,7 @@ class Signals(object):
     PICTURE = "picture"
     PICTURE_REQUEST = "picture_request"
     SLACK_MESSAGE = "slackmessage"
+    SPEECH_MESSAGE = "speechmessage"
     UNLOCK = "unlock"
     UNLOCK_HISTORY = "unlock_history"
     UNLOCKED = "unlocked"

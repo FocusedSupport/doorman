@@ -14,6 +14,7 @@ import components.devices.camera as cam
 import components.devices.lock as lock
 import components.devices.gpio_cleanup as gpio
 import components.devices.speakers as spkr
+import components.devices.speech as speech
 import components.slack.slack_sender as ss
 import components.slack.slack_uploader as slackUpload
 import components.slack.imagebin_uploader as imagebinUpload
@@ -37,6 +38,11 @@ def start_device_processing():
     audio.daemon = True
     print("Starting audio")
     audio.start()
+
+    tts = threading.Thread(target=speech.Speech)
+    tts.daemon = True
+    print("Starting Text to Speech")
+    tts.start()
 
     camera = threading.Thread(target=cam.Camera)
     camera.daemon = True

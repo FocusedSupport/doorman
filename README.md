@@ -14,6 +14,8 @@ Edit `slackbot_settings.py`:
 1. Update `team_name` as appropriate
 2. Update `bot_name` as appropriate
 3. Either uncomment and include your bot's API token or identify it in your environment via the variable `SLACKBOT_API_TOKEN`
+4. Set the environment variable DOORBELL_SOUND to the path to a mp3 file to be played when the doorbell rings.
+5. Set the environment variable $SPEECH_SCRIPT to a script which does text to speech.   Several examples are in the misc directory.  
 
 ## To Run
 `python run.py`

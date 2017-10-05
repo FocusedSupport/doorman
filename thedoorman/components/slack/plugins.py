@@ -39,6 +39,10 @@ def help_me(message):
     say (message)
 
         Repeats the message on to the channel.
+        
+    speak (message)
+    
+        Says the message over the speakers.    
 
     play (MP3 URL)
 
@@ -98,6 +102,13 @@ def say(message, whatToSay):
     print("Got request to say a message from " + username + ": " + whatToSay)
     message.reply("Will say " + whatToSay)
     dispatcher.send(signal=Signals.SLACK_MESSAGE, sender=Senders.SLACKBOT, msg=whatToSay, suppressIconAndTime=True)
+
+@respond_to('^speak\s*(.*)$', re.IGNORECASE)
+def say(message, whatToSay):
+    username = UserManager().get_username(message._get_user_id())
+    print("Got request to speak a message from " + username + ": " + whatToSay)
+    message.reply("Will speak " + whatToSay)
+    dispatcher.send(signal=Signals.SPEECH_MESSAGE, sender=Senders.SLACKBOT, msg=whatToSay)
 
 @respond_to('^play\s*(.*)$', re.IGNORECASE)
 def play(message, audio_file):
