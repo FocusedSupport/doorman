@@ -4,6 +4,7 @@ import pygame
 import urllib.request
 import subprocess
 import re
+import mutagen, mutagen.mp3
 
 from pydispatch import dispatcher
 from ..dispatcher.signals import Signals
@@ -16,12 +17,20 @@ class Speakers(object):
         dispatcher.connect(self._handle_request, signal=Signals.AUDIO_REQUEST, sender=dispatcher.Any)
         dispatcher.connect(self._cancel_playback, signal=Signals.AUDIO_CANCEL, sender=dispatcher.Any)
        
-        pygame.mixer.init()
         self.doorbell_sound = os.environ['DOORBELL_SOUND']
         self.ytdl = os.environ['YOUTUBEDL_PATH']
         self.tmpDir = "/tmp/"
-
+        self.sampling_rate = -1
+        self._initialize_sound(44100)
         self._run()
+
+
+    def _initialize_sound(self, newRate):
+        if newRate != self.sampling_rate:
+            self.sampling_rate = newRate
+            pygame.quit()
+            pygame.mixer.init(frequency=self.sampling_rate)
+            print("Initialized pygame.mixer frequency to " + str(self.sampling_rate))
 
     def _handle_doorbell(self):
         self._play_sound(self.doorbell_sound)
@@ -64,6 +73,9 @@ class Speakers(object):
         pygame.mixer.music.stop()
 
     def _play_sound(self, sound_file):
+        mp3 = mutagen.mp3.MP3(sound_file)
+        self._initialize_sound(mp3.info.sample_rate)
+
         print("Speakers: playing ", sound_file)
 
         pygame.mixer.music.load(sound_file)
