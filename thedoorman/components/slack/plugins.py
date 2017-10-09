@@ -111,11 +111,11 @@ def say(message, whatToSay):
     dispatcher.send(signal=Signals.SPEECH_MESSAGE, sender=Senders.SLACKBOT, msg=whatToSay)
 
 @respond_to('^play\s*(.*)$', re.IGNORECASE)
-def play(message, audio_file):
+def play(message, url):
     username = UserManager().get_username(message._get_user_id())
-    print("Got request to play an audio file from " + username + ": " + audio_file)
-    message.reply("Will play " + audio_file)
-    dispatcher.send(signal=Signals.AUDIO_REQUEST, sender=Senders.SLACKBOT, file=audio_file)
+    print("Got request to play an audio file from " + username + ": " + url)
+    message.reply("Will play " + url)
+    dispatcher.send(signal=Signals.AUDIO_REQUEST, sender=Senders.SLACKBOT, url=url)
 
 @respond_to('^cancel audio.*$', re.IGNORECASE)
 def cancel(message):

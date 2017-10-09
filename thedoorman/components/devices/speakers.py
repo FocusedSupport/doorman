@@ -2,6 +2,8 @@ import os
 import time
 import pygame
 import urllib.request
+import subprocess
+import re
 
 from pydispatch import dispatcher
 from ..dispatcher.signals import Signals
@@ -16,16 +18,43 @@ class Speakers(object):
        
         pygame.mixer.init()
         self.doorbell_sound = os.environ['DOORBELL_SOUND']
-        
+        self.ytdl = os.environ['YOUTUBEDL_PATH']
+        self.tmpDir = "/tmp/"
+
         self._run()
 
     def _handle_doorbell(self):
         self._play_sound(self.doorbell_sound)
 
-    def _handle_request(self, file):
-        sound_file = "/tmp/" + os.path.basename(file)
-        urllib.request.urlretrieve(file, sound_file)
-        self._play_sound(sound_file)
+    def _handle_request(self, url):
+        if re.match(".*youtu\.?be.*", url) != None:
+            sound_file = self._download_youtube(url)
+        else:
+            sound_file = self._download_url(url)
+        if sound_file != None:
+            self._play_sound(sound_file)
+
+    def _download_url(self, url):
+        sound_file = self.tmpDir + os.path.basename(url)
+        urllib.request.urlretrieve(url, sound_file)
+        return sound_file
+
+    def _download_youtube(self, url):
+        outputpath = self.tmpDir + "%(id)s.%(ext)s"
+        pattern = ".*Destination: " + self.tmpDir + "(\w+\.mp3).*"
+        regexp = re.compile(pattern)
+
+        url = url.strip("<>")
+        proc = subprocess.Popen(
+            [self.ytdl, '-o', outputpath, '-f', 'mp3/bestaudio', '-x', '--audio-format', 'mp3', url],
+            stdout=subprocess.PIPE)
+        audioFile = None
+        for line in proc.stdout:
+            strLine = line.decode('utf-8')
+            result = regexp.match(strLine)
+            if result != None:
+                audioFile = self.tmpDir + result.group(1)
+        return audioFile
 
     def _run(self):
         while True:
