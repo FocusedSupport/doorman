@@ -14,6 +14,7 @@ class Signals(object):
     EXIT = "exit"
     AUDIO_REQUEST = "audio_request"
     AUDIO_CANCEL = "audio_cancel"
+    LOG_MESSAGE = "log_message"
 
 
 class Senders(object):

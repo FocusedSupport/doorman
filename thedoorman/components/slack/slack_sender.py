@@ -11,9 +11,11 @@ from ..dispatcher.signals import Signals
 class SlackSender(object):
 
     webhook_url = settings.WEBHOOK_URL
+    log_webhook_url = settings.LOG_WEBHOOK_URL
 
     def __init__(self):
         dispatcher.connect(self._handle_message, signal=Signals.SLACK_MESSAGE, sender=dispatcher.Any)
+        dispatcher.connect(self._handle_logmessage, signal=Signals.LOG_MESSAGE, sender=dispatcher.Any)
         self._run()
 
     def _post_image_from_file(self, filename, token, channels, comment):
@@ -50,6 +52,20 @@ class SlackSender(object):
             )
             if response.status_code != 200:
                 print("Error posting to slack")
+
+    def _handle_logmessage(self, msg=None):
+        formatted_time = time.strftime("%Y%m%d-%H%M%S")
+        formatted_msg = "`[" + formatted_time + "]: " + msg + "`";
+
+        slack_data = {"username": "doorman", "text": msg}
+
+        print("Posting slack log message at %f" % time.time())
+        response = requests.post(
+            self.log_webhook_url, data=json.dumps(slack_data),
+            headers={'Content-Type': 'application/json'}
+        )
+        if response.status_code != 200:
+            print("Error posting to slack")
 
     def _run(self):
         while True:

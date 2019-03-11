@@ -8,6 +8,7 @@ from datetime import timedelta
 from pydispatch import dispatcher
 from components.dispatcher.signals import Signals, Senders
 from components.slack.user_manager import UserManager
+from components.slack.logger import Logger
 
 @respond_to('hi', re.IGNORECASE)
 def hi(message):
@@ -123,6 +124,14 @@ def cancel(message):
     print("Got request to cancel audio playback from " + username)
     message.reply("Will cancel audio playback")
     dispatcher.send(signal=Signals.AUDIO_CANCEL, sender=Senders.SLACKBOT)
+
+
+@respond_to('^log\s*(.*)$', re.IGNORECASE)
+def log(message, whatToSay):
+    username = UserManager().get_username(message._get_user_id())
+    print("Got request to log a message from " + username + ": " + whatToSay)
+    message.reply("Will log " + whatToSay)
+    Logger().log(whatToSay)
 
 @respond_to('^how are you?', re.IGNORECASE)
 def status(message):
