@@ -54,10 +54,7 @@ class SlackSender(object):
                 print("Error posting to slack")
 
     def _handle_logmessage(self, msg=None):
-        formatted_time = time.strftime("%Y%m%d-%H%M%S")
-        formatted_msg = "`[" + formatted_time + "]: " + msg + "`";
-
-        slack_data = {"username": "doorman", "text": formatted_msg}
+        slack_data = {"username": "doorman", "text": msg}
 
         print("Posting slack log message at %f" % time.time())
         response = requests.post(
