@@ -6,7 +6,7 @@ from time import sleep
 from pydispatch import dispatcher
 from ..dispatcher.signals import Signals, Senders
 from .gpio import Pins
-
+from ..slack.logger import Logger
 
 class DoorbellMonitor(object):
 
@@ -19,11 +19,11 @@ class DoorbellMonitor(object):
         self._run()
 
     def _handle_lockevent(self, door=None):
-        print("received lock event, setting lastTime to now, to prevent doorbell")
+        Logger().log("received lock event, setting lastTime to now, to prevent doorbell")
         self.lastTime = time.time()
 
     def _handle_unlockevent(self, door=None):
-        print("received unlock event, setting lastTime to now, to prevent doorbell")
+        Logger().log("received unlock event, setting lastTime to now, to prevent doorbell")
         self.lastTime = time.time()
 
     def _run(self):
@@ -34,11 +34,11 @@ class DoorbellMonitor(object):
             GPIO.wait_for_edge(Pins.BUTTON_CHANNEL, GPIO.RISING)
             pinValue = GPIO.input(Pins.BUTTON_CHANNEL)
 
-            print("input after rising edge at " + str(time.time()))
+            Logger().log("input after rising edge at " + str(time.time()))
             sleep(self.bounce)
             pinValue = GPIO.input(Pins.BUTTON_CHANNEL)
             if pinValue == 0:
-                print("skipping bouncing ring")
+                Logger().log("skipping bouncing ring")
             else:
                 currentTime = time.time()
                 if currentTime - self.lastTime > self.ignoreTimeSeconds:

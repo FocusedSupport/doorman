@@ -57,7 +57,7 @@ class SlackSender(object):
         formatted_time = time.strftime("%Y%m%d-%H%M%S")
         formatted_msg = "`[" + formatted_time + "]: " + msg + "`";
 
-        slack_data = {"username": "doorman", "text": msg}
+        slack_data = {"username": "doorman", "text": formatted_msg}
 
         print("Posting slack log message at %f" % time.time())
         response = requests.post(

@@ -6,4 +6,4 @@ PLUGINS = [
     'plugins',
 ]
 DEFAULT_REPLY = "Sorry dude, me no comprende"
-ERRORS_TO = '#doormanlogs'
+ERRORS_TO = 'doormanlogs'

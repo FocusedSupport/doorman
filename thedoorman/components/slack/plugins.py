@@ -94,34 +94,34 @@ def repeat_open(message):
 def request_picture(message):
     username = UserManager().get_username(message._get_user_id())
     message.reply("Taking a picture for " + username)
-    print("Got slackbot picture command from " + username + " at time  %f" % time.time())
+    Logger().log("Got slackbot picture command from " + username )
     dispatcher.send(signal=Signals.PICTURE_REQUEST, sender=Senders.SLACKBOT, username=username)
 
 @respond_to('^say\s*(.*)$', re.IGNORECASE)
 def say(message, whatToSay):
     username = UserManager().get_username(message._get_user_id())
-    print("Got request to say a message from " + username + ": " + whatToSay)
+    Logger().log("Got request to say a message from " + username + ": " + whatToSay)
     message.reply("Will say " + whatToSay)
     dispatcher.send(signal=Signals.SLACK_MESSAGE, sender=Senders.SLACKBOT, msg=whatToSay, suppressIconAndTime=True)
 
 @respond_to('^speak\s*(.*)$', re.IGNORECASE)
 def say(message, whatToSay):
     username = UserManager().get_username(message._get_user_id())
-    print("Got request to speak a message from " + username + ": " + whatToSay)
+    Logger().log("Got request to speak a message from " + username + ": " + whatToSay)
     message.reply("Will speak " + whatToSay)
     dispatcher.send(signal=Signals.SPEECH_MESSAGE, sender=Senders.SLACKBOT, msg=whatToSay)
 
 @respond_to('^play\s*(.*)$', re.IGNORECASE)
 def play(message, url):
     username = UserManager().get_username(message._get_user_id())
-    print("Got request to play an audio file from " + username + ": " + url)
+    Logger().log("Got request to play an audio file from " + username + ": " + url)
     message.reply("Will play " + url)
     dispatcher.send(signal=Signals.AUDIO_REQUEST, sender=Senders.SLACKBOT, url=url)
 
 @respond_to('^cancel audio.*$', re.IGNORECASE)
 def cancel(message):
     username = UserManager().get_username(message._get_user_id())
-    print("Got request to cancel audio playback from " + username)
+    Logger().log("Got request to cancel audio playback from " + username)
     message.reply("Will cancel audio playback")
     dispatcher.send(signal=Signals.AUDIO_CANCEL, sender=Senders.SLACKBOT)
 
@@ -129,7 +129,7 @@ def cancel(message):
 @respond_to('^log\s*(.*)$', re.IGNORECASE)
 def log(message, whatToSay):
     username = UserManager().get_username(message._get_user_id())
-    print("Got request to log a message from " + username + ": " + whatToSay)
+    Logger().log("Got request to log a message from " + username + ": " + whatToSay)
     message.reply("Will log " + whatToSay)
     Logger().log(whatToSay)
 

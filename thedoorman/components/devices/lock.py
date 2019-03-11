@@ -4,6 +4,8 @@ from pydispatch import dispatcher
 
 from ..dispatcher.signals import Signals, Senders
 from ..slack.user_manager import UserManager
+from ..slack.logger import Logger
+
 import RPi.GPIO as GPIO
 from .gpio import Pins
 
@@ -36,7 +38,8 @@ class Lock(object):
             print("Unknown door " + door + ", not unlocking")
             return
 
-        print("unlocking " + door + " for " + duration + " seconds, initiated by "+username)
+        logmsg = "unlocking " + door + " for " + duration + " seconds, initiated by "+username
+        Logger().log(logmsg)
 
         # store the command in our history map
         historyEntry = { "door" : door, "duration" : duration }
@@ -60,7 +63,7 @@ class Lock(object):
             print("unable to find a history entry for user " + username)
 
     def _cleanup(self):
-        print("locking up all doors in cleanup")
+        Logger().log("locking up all doors in cleanup")
         self._lock(Pins.MAIN_DOOR_RELAY_CHANNEL)
         self._lock(Pins.SIDE_DOOR_RELAY_CHANNEL)
 
