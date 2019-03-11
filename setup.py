@@ -20,6 +20,7 @@ setup(
     install_requires=[
         'slackbot',
         'PyDispatcher',
+        'mutagen',
         'RPi.GPIO',
         'picamera',
         'Pillow',
